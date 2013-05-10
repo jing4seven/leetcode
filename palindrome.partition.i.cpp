@@ -20,11 +20,9 @@ public:
         vector<vector<string>> result;
         vector<string> temp;
         stringCut(s, result, temp, 0);
-        
         return result;
-        
     }
-    void stringCut(string s, vector<vector<string>> &result, vector<string> &temp, int start) {  
+    void stringCut(string s, vector<vector<string>> &result, vector<string> &temp, int start) {
         if (start == s.length()) {
             result.push_back(temp);
         } else {
@@ -43,7 +41,6 @@ public:
         } else if (s.length() == 1) {
             return true;
         }
-        
         for (int i=0,j=s.length()-1;i<=j;i++,j--) {
             if (s[i]!=s[j]) {
                 return false;
