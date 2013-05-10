@@ -18,63 +18,26 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<vector<string>> result;
-        vector<vector<string>> temp;
-        for (int i=0;i<s.length();i++) {
-            temp = stringCut(s,i);
-            for (int j=0;j<temp.size();j++) {
-                if (temp[j].size() > 0) {
-                    result.push_back(temp[j]);
-                }
-            }
-        }
-        return result;
-        
-    }
-    vector<vector<string>> stringCut(string s, int countCut) {
-        vector<vector<string>> result;
         vector<string> temp;
-        
-        if (countCut == 0) {
-            if (isPalindrome(s)) {
-                temp.push_back(s);
-                result.push_back(temp);
-            }
-        } else {
-            for (int i=0; i<s.length();i++) {
-                bool flag1 = false;
-                temp.clear();
-                string tempStr = s.substr(0,i);
-                if (isPalindrome(tempStr)) {
-                    flag1 = true;
-                } else {
-                    continue;
-                }
-                vector<vector<string>> subResult;
-                subResult = stringCut(s.substr(i, s.length()-i), countCut-1);
-                bool flag3 = false;
-                for (int j=0;j<subResult.size();j++) {
-                    for (int k=0; k<subResult[j].size();k++) {
-                        bool flag2 = false;
-                        if (isPalindrome(subResult[j][k])) {
-                            flag2 = true;    
-                        }
-                        if (flag1 == true && flag2 == true) {
-                            if (flag3 == false) {
-                                temp.push_back(tempStr);
-                                flag3 = true;
-                            }
-                            temp.push_back(subResult[j][k]);
-                        }
-                    }
-                }
-                result.push_back(temp);
-            }
-            
-        }
+        stringCut(s, result, temp, 0);
         
         return result;
+        
     }
-    bool isPalindrome(string &s) {
+    void stringCut(string s, vector<vector<string>> &result, vector<string> &temp, int start) {  
+        if (start == s.length()) {
+            result.push_back(temp);
+        } else {
+            for (int i=1; i<=s.length()-start; i++) { // i is the length of sub string.
+                if (isPalindrome(s.substr(start, i))) {
+                    temp.push_back(s.substr(start,i));
+                    stringCut(s, result, temp, start+i);
+                    temp.pop_back();
+                }
+            }
+        }
+    }
+    bool isPalindrome(string s) {
         if (s.length() == 0) {
             return false;
         } else if (s.length() == 1) {
