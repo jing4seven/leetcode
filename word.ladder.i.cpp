@@ -21,54 +21,52 @@ All words contain only lowercase alphabetic characters.
 */
 
 /*
-Use BFS
-1. First of all find all next possiable item which exits in dict.
-2. 
+Implement by BFS
+1. First of all, find all next possiable item which exits in dict.
+2. If it exits in dict, then push it to collector, erase it in dict.
+3. Lopp step1 and step2.
 */
 class Solution {
 public:
     int ladderLength(string start, string end, unordered_set<string> &dict) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-    	queue<string> que;
-    	queue<string> queBuff;
-    	int result(0);
 
-    	if (start.size() != end.size() || !dict.size()) return 0;
+        if (start.size() != end.size() || !dict.size()) return 0;
 
-    	que.push(start); // init first level for "start"
+        queue<string> que;
+        queue<string> queBuff;
 
-    	while (dict.size() && !que.empty()) {
-    		while (!que.empty()) {
-    			string ss = que.front();
-    			que.pop();
+        int result(1);
+        que.push(start); // init first level for "start"
+        while (dict.size() && !que.empty()) {
+            while (!que.empty()) {
+                string ss = que.front();
+                que.pop();
 
-    			string temp;
-				temp = ss;
-    			for (int i=0; i<ss.length(); i++) {		
-    				for (char j='a'; j<='z'; j++) {
-    					if (ss[i] == j) continue;
-    					
-    					ss[i] = j;
+                string temp;
+                temp = ss; // Back up original item.
+                for (int i=0; i<ss.length(); i++) {     
+                    for (char j='a'; j<='z'; j++) {
+                        if (ss[i] == j) continue;
+                        
+                        ss[i] = j;
 
-    					if (ss == end) return ++result;
+                        if (ss == end) return ++result;
 
-    					if (dict.count(ss)) {
-    						queBuff.push(ss);
-    						dict.erase(ss);
-    					}
-    				}
-    				ss = temp;
-    			}
-    			if (queBuff.size() > 0) {
-    				que.swap(queBuff);
-	    			result++;
-    			} else {
-    				return 0;
-    			}
-    		}
-    	}	
+                        if (dict.count(ss)) {
+                            queBuff.push(ss);
+                            dict.erase(ss);
+                        }
+                    }
+                    ss = temp;
+                }
+                
+            }
+            que.swap(queBuff); // Make next level item can be loop.
+            result++;   
+        }   
 
-    	return 0;
+        return 0;
     }
 };
